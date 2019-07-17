@@ -1,41 +1,96 @@
 <template>
   <div class="hello">
-    <div class="tribe-top">
-      <div class="tribe-top-top">
-        <div class="tribe-top-left">
-          <div><i class="iconfont">&#xe68d;</i></div>
-          <div>
-            <p>工大生活部落（主校区）</p>
-            <p>
-              <i class="iconfont">&#xe51b;</i>
-              周一~周五 营业时间:17:30-22:30。
-              周六~周日 营业时间：08:00-22:30。
-              感谢您一路以来的支持！我们为您保证最好的服务质量。
-            </p>
+    <div class="tribe-every">
+      <div class="tribe-top">
+        <div class="tribe-top-top">
+          <div class="tribe-top-left">
+            <div><i class="iconfont">&#xe68d;</i></div>
+            <div>
+              <p>工大生活部落（主校区）</p>
+              <p>
+                <i class="iconfont">&#xe51b;</i>
+                周一~周五 营业时间:17:30-22:30。
+                周六~周日 营业时间：08:00-22:30。
+                感谢您一路以来的支持！我们为您保证最好的服务质量。
+              </p>
+            </div>
+          </div>
+          <div class="tribe-top-right">
+            <p><i class="iconfont">&#xe644;</i></p>
+            <p>收藏</p>
           </div>
         </div>
-        <div class="tribe-top-right">
-          <p><i class="iconfont">&#xe644;</i></p>
-          <p>收藏</p>
-        </div>
       </div>
+      <div class="tribe-title-list">
+        <ul>
+          <li
+          v-for="(item,index) in tribeList"
+          :key="index"
+          @click='tribeListToPage(item.pageNumber,index)'
+          :class="tribeIndex==''?item.tribePageActive:(tribeIndex==index?'list-active':'')"
+          >
+          {{item.name}}
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="choose-view">
+      <Choose v-if="isPageNumber==''|| isPageNumber==1"></Choose>
+      <Evaluate v-if="isPageNumber==2"></Evaluate>
+      <Business v-if="isPageNumber==3"></Business>
     </div>
   </div>
 </template>
 
 <script>
+import Choose from './choose.vue'
+import Evaluate from './evaluate.vue'
+import Business from './business.vue'
 export default {
-  name: 'HelloWorld',
+  name: 'index',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      tribeList:[
+        {
+          name:'选购',
+          pageNumber:'1',
+          tribePageActive:'list-active'
+        },
+        {
+          name:'评价',
+          pageNumber:'2'
+        },
+        {
+          name:'商家',
+          pageNumber:'3'
+        },
+      ],
+      tribeIndex:'',
+      isPageNumber:'',
     }
-  }
+  },
+  components: {
+    Choose,
+    Evaluate,
+    Business
+  },
+  methods: {
+    tribeListToPage(param,index){
+      this.isPageNumber = param
+      this.tribeIndex = index
+    }
+  },
 }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="scss" scoped>
+.tribe-every{
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+}
 .tribe-top{
   width: 10rem;
   background: rgb(201, 200, 200);
@@ -111,5 +166,35 @@ export default {
       }
     }
   }
+}
+.tribe-title-list{
+  width: 10rem;
+  background: #fff;
+  border-bottom: 1px #ccc solid;
+  ul{
+    width: 100%;
+    height: 1.1rem;
+    display: flex;
+    justify-content: space-around;
+    li{
+      width:1.3rem;
+      height: 100%;
+      line-height: 1.1rem;
+      font-size: 0.48rem;
+      text-align: center;
+    }
+    .list-active{
+      color: #000;
+      font-weight: bold;
+      border-bottom: 1px solid rgb(255, 0, 0);
+    }
+  }
+}
+.choose-view{
+  position: absolute;
+  left: 0;
+  top: 3.55rem;
+  right: 0;
+  bottom: 0;
 }
 </style>
