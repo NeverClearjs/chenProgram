@@ -11,6 +11,11 @@ export default new Router({
       path: '/',
       name: 'index',
       component: index
-    }
+    },
+    {
+      name: 'search',
+      path: '/search',
+      component: resolve => require(['../components/search.vue'], resolve)
+    },
   ]
 })

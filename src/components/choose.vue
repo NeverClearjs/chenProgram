@@ -4,7 +4,7 @@
       <div class="choose-every">
         <div class="choose-left-list">
           <ul>
-            <li><i class="iconfont">&#xe51e;</i></li>
+            <li @click="goToSearch"><i class="iconfont">&#xe51e;</i></li>
             <li
             v-for="(item,index) in chooseLeftList"
             :key="index"
@@ -29,6 +29,7 @@
                 <li
                 v-for="(itemFood,index) in item.foodList"
                 :key="index"
+                @click="showDetails(itemFood)"
                 >
                   <img :src="itemFood.img" alt="" class="food-img"/>
                   <div class="p-list">
@@ -43,6 +44,15 @@
               </ul>
             </li>
           </ul>
+        </div>
+      </div>
+      <div class="show-details" v-if='isShowDetails'>
+        <div class="show-details-every">
+          <div class="close-show-details" @click="closeShowDetails"><i class="iconfont">&#xe678;</i></div>
+          <img :src="showDetailsInfo.bigImg" alt="" srcset="">
+          <p>{{showDetailsInfo.title}}</p>
+          <p>已售 {{showDetailsInfo.sold}}</p>
+          <p><span>￥{{showDetailsInfo.price}}</span>/{{showDetailsInfo.unit}}</p>
         </div>
       </div>
     </div>
@@ -64,44 +74,52 @@ export default {
             {
               id:'1',
               name:'矿泉水下单不得超过6瓶，否则系统自动退款',
+              title:'康师傅 茉莉清茶1L 大瓶',
               price:'4.89',
               unit:'瓶',
               special:'特价',
               descript: "",
               img:require('../assets/img/001.jpg'),
+              bigImg:require('../assets/img/010.jpg'),
               sold:'10', //已售
               noGoods:'1'  //是否为已售空 0为否，1为是
             },
             {
               id:'1',
               name:'亚弟抱抱粮 蟹黄鲜虾',
+              title:'冰露',
               price:'10',
               unit:'袋',
               special:'',
               descript: "",
               img:require('../assets/img/002.jpg'),
+              bigImg:require('../assets/img/012.jpg'),
               sold:'1015',
               noGoods:'0'
             },
             {
               id:'1',
               name:'亚弟抱抱粮 蟹黄鲜虾',
+              title:'冰露',
               price:'10',
               unit:'袋',
               special:'特价',
               descript: "冰糖葫芦 甜蜜上线 坚果蜜饯区",
               img:require('../assets/img/002.jpg'),
+              bigImg:require('../assets/img/012.jpg'),
               sold:'104',
               noGoods:'0'
             },
             {
               id:'1',
               name:'亚弟抱抱粮 蟹黄鲜虾',
+              title:'康师傅 茉莉清茶1L 大瓶',
               price:'10',
               unit:'袋',
               special:'特价',
               descript: "",
               img:require('../assets/img/001.jpg'),
+              bigImg:require('../assets/img/011.jpg'),
               sold:'10',
               noGoods:'0'
             },
@@ -159,6 +177,14 @@ export default {
         },
       ],
       chooseLeftListIndex:'',
+      showDetailsInfo:{
+        bigImg:'',
+        sold:'',
+        price:'',
+        unit:'',
+        title:''
+      },
+      isShowDetails:false
     }
   },
   methods: {
@@ -168,7 +194,27 @@ export default {
       // $('.choose-right-list').animate({scrollTop:$('#'+ hType).offset().top+'px'},500)
       this.chooseLeftListIndex = index
     },
-    goodsListActive(){}
+    goodsListActive(){},
+    showDetails(itemFood){
+      if(itemFood.noGoods==0){
+        this.isShowDetails = true
+        this.showDetailsInfo.bigImg=itemFood.bigImg
+        this.showDetailsInfo.sold=itemFood.sold
+        this.showDetailsInfo.price=itemFood.price
+        this.showDetailsInfo.unit=itemFood.unit
+        this.showDetailsInfo.title=itemFood.title
+      }else{
+        this.$toasted.show('该商品已经卖完啦!')
+      }
+    },
+    closeShowDetails(){
+      this.isShowDetails = false
+    },
+    goToSearch(){
+      this.$router.push({
+        name:'search'
+      })
+    }
   },
 }
 </script>
@@ -319,6 +365,59 @@ export default {
       .no-list{
         width: 7.3rem;
         height: 2.5rem;
+      }
+    }
+  }
+  .show-details{
+    width: 100%;
+    height: 100%;
+    background: rgba($color: #000000, $alpha: 0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 15;
+    .show-details-every{
+      width: 8.5rem;
+      height: 12rem;
+      background: #fff;
+      position: absolute;
+      top: 45%;
+      left: 50%;
+      transform: translate(-50%,-50%);
+      border-radius: 0.3rem;
+      .close-show-details{
+        position: absolute;
+        right: 0.2rem;
+        top: 0.2rem;
+        i{
+          font-size: 0.8rem;
+          color: #999
+        }
+      }
+      img{
+        width: 100%;
+        border-top-left-radius: 0.3rem;
+        border-top-right-radius: 0.3rem;
+      }
+      p{
+        margin-left: 0.4rem;
+        margin-top: 0.3rem;
+        &:nth-child(3){
+          font-size: 0.44rem;
+          color: #000000;
+        }
+        &:nth-child(4){
+          font-size: 0.3rem;
+          color: rgb(150, 148, 148);
+        }
+        &:nth-child(5){
+          font-size: 0.34rem;
+          color: #a9a9a9;
+          span{
+            font-size: 0.44rem;
+            color: #df5458;
+          }
+        }
       }
     }
   }

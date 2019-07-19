@@ -5,12 +5,19 @@ import App from './App';
 import router from './router';
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
+import Toasted from 'vue-toasted'
 import 'lib-flexible/flexible.js';
 import  './assets/css/iconfont.css';
 import './assets/css/common.css'
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI, { size: 'small' });
+Vue.use(Toasted, {
+  singleton: true,
+  theme: 'toasted-primary',
+  position: 'bottom-center',
+  duration: 1500
+})
 
 /* eslint-disable no-new */
 new Vue({
